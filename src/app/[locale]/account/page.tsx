@@ -42,6 +42,14 @@ export default async function AccountPage({
 
   const statusBadge = "rounded-full px-2 py-0.5 text-xs font-medium";
 
+  const ticketSummary = (b: { numAdults: number; numKids: number }) =>
+    [
+      b.numAdults > 0 ? `${b.numAdults} ${t("admin.adults")}` : null,
+      b.numKids > 0 ? `${b.numKids} ${t("admin.kids")}` : null,
+    ]
+      .filter(Boolean)
+      .join(" + ");
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
       <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
@@ -54,7 +62,7 @@ export default async function AccountPage({
         </h2>
         {membership ? (
           <div className="mt-3">
-            <p className="font-medium text-sky-700 dark:text-sky-400">
+            <p className="font-medium text-brand-700 dark:text-brand-400">
               {lang === "ar" ? membership.plan.nameAr : membership.plan.nameEn}
             </p>
             <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
@@ -75,7 +83,7 @@ export default async function AccountPage({
         )}
         <Link
           href="/account/membership"
-          className="mt-4 inline-block rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-500"
+          className="mt-4 inline-block rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-500"
         >
           {t("account.viewPlans")}
         </Link>
@@ -104,7 +112,7 @@ export default async function AccountPage({
                   </p>
                   <p className="text-sm text-slate-500 dark:text-slate-400">
                     {formatDateTime(b.session.startTime, lang)} ·{" "}
-                    {b.numTickets}× · {b.totalSar} {t("common.currency")}
+                    {ticketSummary(b)} · {b.totalSar} {t("common.currency")}
                   </p>
                 </div>
                 <form action={cancelAction}>
@@ -141,7 +149,7 @@ export default async function AccountPage({
                   {lang === "ar" ? b.session.titleAr : b.session.titleEn}
                 </p>
                 <p className="text-sm text-slate-500 dark:text-slate-400">
-                  {formatDateTime(b.session.startTime, lang)} · {b.numTickets}×
+                  {formatDateTime(b.session.startTime, lang)} · {ticketSummary(b)}
                 </p>
               </div>
               <span

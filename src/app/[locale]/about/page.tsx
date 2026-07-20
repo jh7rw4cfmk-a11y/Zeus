@@ -22,7 +22,7 @@ export default async function AboutPage() {
             key={v}
             className="flex items-start gap-2 text-slate-600 dark:text-slate-300"
           >
-            <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-600" />
+            <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-600" />
             {v}
           </li>
         ))}

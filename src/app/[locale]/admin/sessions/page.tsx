@@ -88,20 +88,41 @@ export default async function AdminSessionsPage({
           />
         </div>
         <div>
-          <label className={labelClass}>{t("admin.price")}</label>
+          <label className={labelClass}>{t("admin.priceAdult")}</label>
           <input
             type="number"
-            name="priceSar"
+            name="priceAdultSar"
+            min={0}
+            defaultValue={80}
+            required
+            className={inputClass}
+          />
+        </div>
+        <div>
+          <label className={labelClass}>{t("admin.priceKid")}</label>
+          <input
+            type="number"
+            name="priceKidSar"
             min={0}
             defaultValue={60}
             required
             className={inputClass}
           />
         </div>
+        <div className="flex items-center gap-6 sm:col-span-2">
+          <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+            <input type="checkbox" name="womenOnly" className="h-4 w-4" />
+            {t("admin.womenOnly")}
+          </label>
+          <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+            <input type="checkbox" name="kidsAllowed" className="h-4 w-4" />
+            {t("admin.kidsAllowed")}
+          </label>
+        </div>
         <div className="flex items-end">
           <button
             type="submit"
-            className="w-full rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-500 sm:w-auto"
+            className="w-full rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-500 sm:w-auto"
           >
             {t("common.add")}
           </button>
@@ -122,19 +143,30 @@ export default async function AdminSessionsPage({
               <div>
                 <p className="font-medium text-slate-900 dark:text-white">
                   {lang === "ar" ? s.titleAr : s.titleEn}{" "}
-                  <span className="ms-2 rounded-full bg-sky-50 px-2 py-0.5 text-xs text-sky-700 dark:bg-sky-950 dark:text-sky-300">
+                  <span className="ms-2 rounded-full bg-brand-50 px-2 py-0.5 text-xs text-brand-700 dark:bg-brand-950 dark:text-brand-300">
                     {t(`sessionTypes.${s.type}`)}
                   </span>
+                  {s.womenOnly && (
+                    <span className="ms-1 rounded-full bg-pink-50 px-2 py-0.5 text-xs text-pink-700 dark:bg-pink-950 dark:text-pink-300">
+                      {t("schedule.womenOnly")}
+                    </span>
+                  )}
+                  {s.kidsAllowed && (
+                    <span className="ms-1 rounded-full bg-amber-50 px-2 py-0.5 text-xs text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+                      {t("schedule.kidsWelcome")}
+                    </span>
+                  )}
                 </p>
                 <p className="text-slate-500 dark:text-slate-400">
                   {formatDateTime(s.startTime, lang)} · {t("admin.capacity")}:{" "}
-                  {s.capacity} · {s.priceSar} {t("common.currency")}
+                  {s.capacity} · {s.priceAdultSar}/{s.priceKidSar}{" "}
+                  {t("common.currency")}
                 </p>
               </div>
               <div className="flex items-center gap-3">
                 <Link
                   href={`/admin/sessions/${s.id}/edit`}
-                  className="text-xs font-medium text-sky-600 hover:underline"
+                  className="text-xs font-medium text-brand-600 hover:underline"
                 >
                   {t("common.edit")}
                 </Link>

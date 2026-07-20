@@ -33,17 +33,31 @@ Open http://localhost:3000.
 
 **Change or remove these before any production deployment.**
 
+## Business rules
+
+- Open 5:00 PM – 1:00 AM daily. **Closed Mondays.**
+- **Wednesdays are Women Only**, all day.
+- Pricing: **80 SAR / adult**, **60 SAR / child**, per session.
+- Kids are welcome daily (except Wednesdays) only during the first slot,
+  **5:00 PM – 8:00 PM**. Admin marks this per-session via the "Kids Allowed"
+  and "Women Only" flags when creating/editing sessions — the seed data
+  applies these rules automatically.
+- Instagram: [@Coolarena.sa](https://instagram.com/Coolarena.sa)
+
 ## What's implemented
 
-- Marketing pages: home, about, pricing, contact — English + Arabic
-- Public schedule with filtering, per-session availability
-- Booking flow with a **mock checkout** (clearly labeled, no real payment
-  is charged)
+- Marketing pages: home, about, pricing, contact — English + Arabic, with
+  the real CoolArena logo and brand colors
+- Public schedule with filtering, per-session availability, and
+  Women-Only / Kids-Welcome badges
+- Booking flow with separate adult/child ticket counts and a **mock
+  checkout** (clearly labeled, no real payment is charged)
 - Customer account portal: upcoming/past bookings, cancel, membership
   status and credits
 - Membership plans with mock-checkout subscribe/upgrade
-- Admin dashboard (role-gated): overview stats, session CRUD, bookings
-  management, members + membership plan management
+- Admin dashboard (role-gated): overview stats, session CRUD (adult/kid
+  pricing, women-only, kids-allowed), bookings management, members +
+  membership plan management
 - Installable PWA: web manifest, icons, service worker
 
 ## Known simplifications / follow-ups

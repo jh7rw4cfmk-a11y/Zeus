@@ -1,9 +1,12 @@
 import { prisma } from "@/lib/prisma";
 
-function withAvailability<T extends { capacity: number; bookings: { numTickets: number }[] }>(
-  session: T
-) {
-  const booked = session.bookings.reduce((sum, b) => sum + b.numTickets, 0);
+function withAvailability<
+  T extends { capacity: number; bookings: { numAdults: number; numKids: number }[] },
+>(session: T) {
+  const booked = session.bookings.reduce(
+    (sum, b) => sum + b.numAdults + b.numKids,
+    0
+  );
   return { ...session, spotsLeft: Math.max(session.capacity - booked, 0) };
 }
 

@@ -17,7 +17,9 @@
     "edit": "Edit",
     "delete": "Delete",
     "add": "Add",
-    "back": "Back"
+    "back": "Back",
+    "womenOnly": "Women Only",
+    "kidsWelcome": "Kids Welcome"
   },
   "nav": {
     "home": "Home",
@@ -38,10 +40,16 @@
     "feature2Desc": "From first glides to competitive figure skating and hockey coaching.",
     "feature3Title": "Memberships & credits",
     "feature3Desc": "Skate more, pay less with flexible monthly membership plans.",
+    "visitTitle": "Plan Your Visit",
     "hoursTitle": "Opening Hours",
-    "hoursText": "Sunday – Thursday: 10:00 – 23:00\nFriday – Saturday: 10:00 – 00:00",
+    "hoursText": "5:00 PM – 1:00 AM daily\nClosed Mondays",
+    "womenOnlyNote": "Wednesdays are Women Only",
     "locationTitle": "Find Us",
     "locationText": "CoolArena Ice Rink, King Fahd Road, Riyadh, Saudi Arabia",
+    "pricingTitle": "Pricing",
+    "pricingText": "80 SAR per adult · 60 SAR per child",
+    "kidsTitle": "Kids Hours",
+    "kidsText": "Kids welcome daily 5:00 PM – 8:00 PM (except Wednesdays)",
     "membershipCta": "Explore memberships"
   },
   "about": {
@@ -60,7 +68,11 @@
     "membershipsTitle": "Membership Plans",
     "perSession": "per session",
     "perMonth": "/ month",
-    "popular": "Most popular"
+    "popular": "Most popular",
+    "adultPrice": "Adults",
+    "kidPrice": "Kids",
+    "kidsNote": "Kids welcome daily 5:00 PM – 8:00 PM (except Wednesdays).",
+    "womenOnlyNote": "Wednesdays are reserved for women, all day."
   },
   "contact": {
     "title": "Contact & Location",
@@ -71,7 +83,9 @@
     "emailLabel": "Email",
     "email": "hello@coolarena.sa",
     "hoursLabel": "Hours",
-    "hours": "Sun–Thu 10:00–23:00, Fri–Sat 10:00–00:00",
+    "hours": "5:00 PM – 1:00 AM daily · Closed Mondays · Wednesdays: Women Only",
+    "instagramLabel": "Instagram",
+    "instagram": "@Coolarena.sa",
     "mapNote": "Located on King Fahd Road, easily reachable from central Riyadh."
   },
   "schedule": {
@@ -83,7 +97,9 @@
     "full": "Full",
     "bookButton": "Book",
     "date": "Date",
-    "time": "Time"
+    "time": "Time",
+    "womenOnly": "Women Only",
+    "kidsWelcome": "Kids Welcome"
   },
   "sessionTypes": {
     "PUBLIC_SKATE": "Public Skate",
@@ -94,7 +110,10 @@
   },
   "booking": {
     "title": "Book Session",
-    "ticketsLabel": "Number of tickets",
+    "adultsLabel": "Adults",
+    "kidsLabel": "Children",
+    "kidsNote": "Children welcome 5:00 PM – 8:00 PM only (not on Wednesdays).",
+    "womenOnlyNote": "This session is reserved for women.",
     "totalLabel": "Total",
     "mockNotice": "Demo checkout — no real payment will be charged.",
     "payButton": "Pay & Confirm Booking",
@@ -157,11 +176,16 @@
     "startTime": "Start Time",
     "endTime": "End Time",
     "capacity": "Capacity",
-    "price": "Price (SAR)",
+    "priceAdult": "Price — Adult (SAR)",
+    "priceKid": "Price — Kid (SAR)",
+    "womenOnly": "Women Only",
+    "kidsAllowed": "Kids Allowed (5–8 PM)",
     "allBookings": "All Bookings",
     "customer": "Customer",
     "session": "Session",
     "tickets": "Tickets",
+    "adults": "Adults",
+    "kids": "Kids",
     "status": "Status",
     "allMembers": "All Members",
     "plan": "Plan",

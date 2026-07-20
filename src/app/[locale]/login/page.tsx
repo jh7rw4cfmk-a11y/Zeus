@@ -69,7 +69,7 @@ export default async function LoginPage({
         </div>
         <button
           type="submit"
-          className="w-full rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-500"
+          className="w-full rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-500"
         >
           {t("submitLogin")}
         </button>
@@ -77,7 +77,7 @@ export default async function LoginPage({
 
       <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">
         {t("noAccount")}{" "}
-        <Link href="/register" className="font-medium text-sky-600 hover:underline">
+        <Link href="/register" className="font-medium text-brand-600 hover:underline">
           {tc("register")}
         </Link>
       </p>

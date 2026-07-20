@@ -56,7 +56,13 @@ export default async function AdminBookingsPage({
                     </p>
                   </td>
                   <td className="py-3 pe-4">
-                    {b.numTickets} · {b.totalSar} {t("common.currency")}
+                    {[
+                      b.numAdults > 0 ? `${b.numAdults} ${t("admin.adults")}` : null,
+                      b.numKids > 0 ? `${b.numKids} ${t("admin.kids")}` : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" + ")}{" "}
+                    · {b.totalSar} {t("common.currency")}
                   </td>
                   <td className="py-3 pe-4">
                     <span

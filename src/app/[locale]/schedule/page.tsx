@@ -25,8 +25,8 @@ export default async function SchedulePage({
   const pillClass = (active: boolean) =>
     `rounded-full border px-4 py-1.5 text-sm font-medium transition ${
       active
-        ? "border-sky-600 bg-sky-600 text-white"
-        : "border-slate-200 text-slate-600 hover:border-sky-400 dark:border-slate-700 dark:text-slate-300"
+        ? "border-brand-600 bg-brand-600 text-white"
+        : "border-slate-200 text-slate-600 hover:border-brand-400 dark:border-slate-700 dark:text-slate-300"
     }`;
 
   return (
@@ -65,9 +65,21 @@ export default async function SchedulePage({
             className="flex flex-col gap-3 rounded-2xl border border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800"
           >
             <div>
-              <span className="inline-block rounded-full bg-sky-50 px-2.5 py-0.5 text-xs font-medium text-sky-700 dark:bg-sky-950 dark:text-sky-300">
-                {t(`sessionTypes.${s.type}`)}
-              </span>
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="inline-block rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-950 dark:text-brand-300">
+                  {t(`sessionTypes.${s.type}`)}
+                </span>
+                {s.womenOnly && (
+                  <span className="inline-block rounded-full bg-pink-50 px-2.5 py-0.5 text-xs font-medium text-pink-700 dark:bg-pink-950 dark:text-pink-300">
+                    {t("schedule.womenOnly")}
+                  </span>
+                )}
+                {s.kidsAllowed && (
+                  <span className="inline-block rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+                    {t("schedule.kidsWelcome")}
+                  </span>
+                )}
+              </div>
               <p className="mt-1.5 font-semibold text-slate-900 dark:text-white">
                 {locale === "ar" ? s.titleAr : s.titleEn}
               </p>
@@ -78,7 +90,12 @@ export default async function SchedulePage({
             <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-end">
               <div className="text-end">
                 <p className="font-bold text-slate-900 dark:text-white">
-                  {s.priceSar} {t("common.currency")}
+                  {s.priceAdultSar} {t("common.currency")}
+                  {s.kidsAllowed && (
+                    <span className="ms-1 font-normal text-slate-500 dark:text-slate-400">
+                      · {s.priceKidSar} {t("common.currency")} ({t("pricing.kidPrice")})
+                    </span>
+                  )}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   {s.spotsLeft > 0
@@ -89,7 +106,7 @@ export default async function SchedulePage({
               {s.spotsLeft > 0 ? (
                 <Link
                   href={`/book/${s.id}`}
-                  className="rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-500"
+                  className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-500"
                 >
                   {t("schedule.bookButton")}
                 </Link>

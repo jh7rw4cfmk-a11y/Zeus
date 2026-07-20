@@ -10,6 +10,19 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* CoolArena brand blues, sampled from the official logo */
+  --color-brand-50: #f0f6f9;
+  --color-brand-100: #ddeaf3;
+  --color-brand-200: #b6d3e7;
+  --color-brand-300: #88b8d7;
+  --color-brand-400: #5d9cc6;
+  --color-brand-500: #377fae;
+  --color-brand-600: #1d5f8b;
+  --color-brand-700: #154e75;
+  --color-brand-800: #0e4162;
+  --color-brand-900: #0b3856;
+  --color-brand-950: #08324e;
 }
 
 @media (prefers-color-scheme: dark) {
