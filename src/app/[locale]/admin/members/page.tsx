@@ -139,7 +139,7 @@ export default async function AdminMembersPage({
         <div className="flex items-end">
           <button
             type="submit"
-            className="w-full rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-500 sm:w-auto"
+            className="w-full rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-500 sm:w-auto"
           >
             {t("common.add")}
           </button>

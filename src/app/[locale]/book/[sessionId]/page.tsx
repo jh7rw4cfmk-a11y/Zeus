@@ -29,9 +29,21 @@ export default async function BookSessionPage({
       </h1>
 
       <div className="mt-6 rounded-2xl border border-slate-200 p-6 dark:border-slate-800">
-        <span className="inline-block rounded-full bg-sky-50 px-2.5 py-0.5 text-xs font-medium text-sky-700 dark:bg-sky-950 dark:text-sky-300">
-          {t(`sessionTypes.${session.type}`)}
-        </span>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="inline-block rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-950 dark:text-brand-300">
+            {t(`sessionTypes.${session.type}`)}
+          </span>
+          {session.womenOnly && (
+            <span className="inline-block rounded-full bg-pink-50 px-2.5 py-0.5 text-xs font-medium text-pink-700 dark:bg-pink-950 dark:text-pink-300">
+              {t("schedule.womenOnly")}
+            </span>
+          )}
+          {session.kidsAllowed && (
+            <span className="inline-block rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+              {t("schedule.kidsWelcome")}
+            </span>
+          )}
+        </div>
         <p className="mt-2 font-semibold text-slate-900 dark:text-white">
           {locale === "ar" ? session.titleAr : session.titleEn}
         </p>
@@ -40,16 +52,24 @@ export default async function BookSessionPage({
           {formatDateTime(session.endTime, locale)}
         </p>
         <p className="mt-3 font-bold text-slate-900 dark:text-white">
-          {session.priceSar} {t("common.currency")}{" "}
-          <span className="text-sm font-normal text-slate-500">
-            {t("pricing.perSession")}
-          </span>
+          {t("pricing.adultPrice")}: {session.priceAdultSar} {t("common.currency")}
+          {session.kidsAllowed && (
+            <>
+              {" · "}
+              {t("pricing.kidPrice")}: {session.priceKidSar} {t("common.currency")}
+            </>
+          )}
         </p>
         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
           {session.spotsLeft > 0
             ? t("schedule.spotsLeft", { count: session.spotsLeft })
             : t("schedule.full")}
         </p>
+        {session.womenOnly && (
+          <p className="mt-2 text-xs font-medium text-pink-700 dark:text-pink-300">
+            {t("booking.womenOnlyNote")}
+          </p>
+        )}
       </div>
 
       {error === "full" && (
@@ -69,25 +89,47 @@ export default async function BookSessionPage({
 
       {authSession?.user && session.spotsLeft > 0 && (
         <form action={action} className="mt-6 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-              {t("booking.ticketsLabel")}
-            </label>
-            <input
-              type="number"
-              name="tickets"
-              min={1}
-              max={session.spotsLeft}
-              defaultValue={1}
-              className="mt-1 w-24 rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
-            />
+          <div className="flex gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                {t("booking.adultsLabel")}
+              </label>
+              <input
+                type="number"
+                name="adults"
+                min={0}
+                max={session.spotsLeft}
+                defaultValue={1}
+                className="mt-1 w-24 rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+              />
+            </div>
+            {session.kidsAllowed && (
+              <div>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  {t("booking.kidsLabel")}
+                </label>
+                <input
+                  type="number"
+                  name="kids"
+                  min={0}
+                  max={session.spotsLeft}
+                  defaultValue={0}
+                  className="mt-1 w-24 rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                />
+              </div>
+            )}
           </div>
+          {session.kidsAllowed && (
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              {t("booking.kidsNote")}
+            </p>
+          )}
           <p className="text-xs text-slate-500 dark:text-slate-400">
             {t("booking.mockNotice")}
           </p>
           <button
             type="submit"
-            className="rounded-full bg-sky-600 px-6 py-3 text-sm font-semibold text-white hover:bg-sky-500"
+            className="rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-500"
           >
             {t("booking.payButton")}
           </button>

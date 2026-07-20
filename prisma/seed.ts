@@ -3,12 +3,159 @@ import { PrismaClient, SessionType } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+// Real CoolArena hours: closed Mondays, open 5:00 PM – 1:00 AM every other
+// day. Wednesdays are reserved for women all day. Kids are welcome daily
+// (except Wednesdays) only during the first slot, 5:00 PM – 8:00 PM.
+const ADULT_PRICE_SAR = 80;
+const KID_PRICE_SAR = 60;
+
 function atTime(daysFromNow: number, hour: number, minute = 0) {
   const d = new Date();
   d.setHours(0, 0, 0, 0);
   d.setDate(d.getDate() + daysFromNow);
   d.setHours(hour, minute, 0, 0);
   return d;
+}
+
+function addMinutes(date: Date, minutes: number) {
+  return new Date(date.getTime() + minutes * 60_000);
+}
+
+type SessionSeed = {
+  titleEn: string;
+  titleAr: string;
+  type: SessionType;
+  startTime: Date;
+  endTime: Date;
+  capacity: number;
+  priceAdultSar: number;
+  priceKidSar: number;
+  womenOnly: boolean;
+  kidsAllowed: boolean;
+};
+
+function buildDaySessions(daysFromNow: number): SessionSeed[] {
+  const weekday = atTime(daysFromNow, 0).getDay(); // 0 = Sunday ... 6 = Saturday
+  if (weekday === 1) return []; // Closed Mondays
+
+  const isWednesday = weekday === 3;
+  const sessions: SessionSeed[] = [];
+
+  const base = {
+    priceAdultSar: ADULT_PRICE_SAR,
+    priceKidSar: KID_PRICE_SAR,
+  };
+
+  // Slot A: 5:00 PM – 8:00 PM (kids welcome, except Wednesdays)
+  const slotAStart = atTime(daysFromNow, 17, 0);
+  sessions.push({
+    ...base,
+    titleEn: isWednesday ? "Women's Skate Session" : "Public Skate — Family Hours",
+    titleAr: isWednesday ? "جلسة تزلج للنساء" : "تزلج عام — أوقات العائلة",
+    type: "PUBLIC_SKATE",
+    startTime: slotAStart,
+    endTime: addMinutes(slotAStart, 180),
+    capacity: 40,
+    womenOnly: isWednesday,
+    kidsAllowed: !isWednesday,
+  });
+
+  // Slot B: 8:00 PM – 10:30 PM (adults only)
+  const slotBStart = atTime(daysFromNow, 20, 0);
+  if (isWednesday) {
+    sessions.push({
+      ...base,
+      titleEn: "Women's Skate Session",
+      titleAr: "جلسة تزلج للنساء",
+      type: "PUBLIC_SKATE",
+      startTime: slotBStart,
+      endTime: addMinutes(slotBStart, 150),
+      capacity: 40,
+      womenOnly: true,
+      kidsAllowed: false,
+    });
+  } else if (weekday === 0 || weekday === 4) {
+    // Sunday & Thursday
+    sessions.push({
+      ...base,
+      titleEn: "Hockey Practice",
+      titleAr: "تدريب الهوكي",
+      type: "HOCKEY",
+      startTime: slotBStart,
+      endTime: addMinutes(slotBStart, 150),
+      capacity: 20,
+      womenOnly: false,
+      kidsAllowed: false,
+    });
+  } else if (weekday === 2) {
+    // Tuesday
+    sessions.push({
+      ...base,
+      titleEn: "Figure Skating Lesson",
+      titleAr: "درس تزلج فني",
+      type: "LESSON",
+      startTime: slotBStart,
+      endTime: addMinutes(slotBStart, 150),
+      capacity: 10,
+      womenOnly: false,
+      kidsAllowed: false,
+    });
+  } else {
+    sessions.push({
+      ...base,
+      titleEn: "Public Skate — Evening",
+      titleAr: "تزلج عام — مساءً",
+      type: "PUBLIC_SKATE",
+      startTime: slotBStart,
+      endTime: addMinutes(slotBStart, 150),
+      capacity: 40,
+      womenOnly: false,
+      kidsAllowed: false,
+    });
+  }
+
+  // Slot C: 10:30 PM – 1:00 AM (adults only)
+  const slotCStart = atTime(daysFromNow, 22, 30);
+  if (isWednesday) {
+    sessions.push({
+      ...base,
+      titleEn: "Women's Skate Session",
+      titleAr: "جلسة تزلج للنساء",
+      type: "PUBLIC_SKATE",
+      startTime: slotCStart,
+      endTime: addMinutes(slotCStart, 150),
+      capacity: 40,
+      womenOnly: true,
+      kidsAllowed: false,
+    });
+  } else if (weekday === 5 || weekday === 6) {
+    // Friday & Saturday
+    sessions.push({
+      ...base,
+      titleEn: "Private Rink Rental",
+      titleAr: "حجز خاص للحلبة",
+      type: "RENTAL",
+      startTime: slotCStart,
+      endTime: addMinutes(slotCStart, 150),
+      capacity: 30,
+      womenOnly: false,
+      kidsAllowed: false,
+    });
+  } else {
+    sessions.push({
+      ...base,
+      titleEn: "Public Skate — Late Night",
+      titleAr: "تزلج عام — ليلاً",
+      type: "PUBLIC_SKATE",
+      startTime: slotCStart,
+      endTime: addMinutes(slotCStart, 150),
+      capacity: 40,
+      womenOnly: false,
+      kidsAllowed: false,
+    });
+  }
+
+  return sessions;
 }
 
 async function main() {
@@ -88,99 +235,37 @@ async function main() {
   // Clear existing sessions so seeding is idempotent for demo data.
   await prisma.iceSession.deleteMany({});
 
-  const sessionsData: {
-    titleEn: string;
-    titleAr: string;
-    type: SessionType;
-    startTime: Date;
-    endTime: Date;
-    capacity: number;
-    priceSar: number;
-  }[] = [];
-
+  const sessionsData: SessionSeed[] = [];
   for (let day = 0; day < 14; day++) {
-    const weekday = atTime(day, 0).getDay(); // 0=Sun..6=Sat
-
-    // Public skate, three sessions daily.
-    for (const [hour, label] of [
-      [10, "Morning"],
-      [16, "Afternoon"],
-      [20, "Evening"],
-    ] as const) {
-      sessionsData.push({
-        titleEn: `Public Skate — ${label}`,
-        titleAr: `تزلج عام — ${label === "Morning" ? "صباحًا" : label === "Afternoon" ? "عصرًا" : "مساءً"}`,
-        type: "PUBLIC_SKATE",
-        startTime: atTime(day, hour),
-        endTime: atTime(day, hour + 2),
-        capacity: 40,
-        priceSar: 60,
-      });
-    }
-
-    // Hockey: Sunday, Tuesday, Thursday (0, 2, 4)
-    if ([0, 2, 4].includes(weekday)) {
-      sessionsData.push({
-        titleEn: "Hockey Practice",
-        titleAr: "تدريب الهوكي",
-        type: "HOCKEY",
-        startTime: atTime(day, 21),
-        endTime: atTime(day, 22, 30),
-        capacity: 20,
-        priceSar: 90,
-      });
-    }
-
-    // Figure skating lesson: Monday, Wednesday (1, 3)
-    if ([1, 3].includes(weekday)) {
-      sessionsData.push({
-        titleEn: "Figure Skating Lesson",
-        titleAr: "درس تزلج فني",
-        type: "LESSON",
-        startTime: atTime(day, 17),
-        endTime: atTime(day, 18),
-        capacity: 10,
-        priceSar: 150,
-      });
-    }
-
-    // Private rental: Friday, Saturday (5, 6)
-    if ([5, 6].includes(weekday)) {
-      sessionsData.push({
-        titleEn: "Private Rink Rental",
-        titleAr: "حجز خاص للحلبة",
-        type: "RENTAL",
-        startTime: atTime(day, 22),
-        endTime: atTime(day, 23),
-        capacity: 30,
-        priceSar: 800,
-      });
-    }
+    sessionsData.push(...buildDaySessions(day));
   }
 
   await prisma.iceSession.createMany({ data: sessionsData });
 
-  const firstPublicSkate = await prisma.iceSession.findFirst({
-    where: { type: "PUBLIC_SKATE" },
+  const firstFamilySession = await prisma.iceSession.findFirst({
+    where: { kidsAllowed: true },
     orderBy: { startTime: "asc" },
   });
 
-  if (firstPublicSkate) {
+  if (firstFamilySession) {
     const existingBooking = await prisma.booking.findFirst({
-      where: { userId: customer.id, sessionId: firstPublicSkate.id },
+      where: { userId: customer.id, sessionId: firstFamilySession.id },
     });
     if (!existingBooking) {
+      const numAdults = 2;
+      const numKids = 1;
+      const totalSar =
+        numAdults * firstFamilySession.priceAdultSar +
+        numKids * firstFamilySession.priceKidSar;
       await prisma.booking.create({
         data: {
           userId: customer.id,
-          sessionId: firstPublicSkate.id,
-          numTickets: 2,
-          totalSar: firstPublicSkate.priceSar * 2,
+          sessionId: firstFamilySession.id,
+          numAdults,
+          numKids,
+          totalSar,
           payment: {
-            create: {
-              amountSar: firstPublicSkate.priceSar * 2,
-              status: "MOCK_PAID",
-            },
+            create: { amountSar: totalSar, status: "MOCK_PAID" },
           },
         },
       });
@@ -190,7 +275,7 @@ async function main() {
   console.log("Seeded:");
   console.log(`  Admin login:    ${admin.email} / Admin123!`);
   console.log(`  Customer login: ${customer.email} / Customer123!`);
-  console.log(`  ${sessionsData.length} sessions created for the next 14 days.`);
+  console.log(`  ${sessionsData.length} sessions created for the next 14 days (closed Mondays).`);
 }
 
 main()

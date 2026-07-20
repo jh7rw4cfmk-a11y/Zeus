@@ -103,20 +103,51 @@ export default async function EditSessionPage({
           />
         </div>
         <div>
-          <label className={labelClass}>{t("admin.price")}</label>
+          <label className={labelClass}>{t("admin.priceAdult")}</label>
           <input
             type="number"
-            name="priceSar"
+            name="priceAdultSar"
             min={0}
-            defaultValue={session.priceSar}
+            defaultValue={session.priceAdultSar}
             required
             className={inputClass}
           />
         </div>
+        <div>
+          <label className={labelClass}>{t("admin.priceKid")}</label>
+          <input
+            type="number"
+            name="priceKidSar"
+            min={0}
+            defaultValue={session.priceKidSar}
+            required
+            className={inputClass}
+          />
+        </div>
+        <div className="flex items-center gap-6 sm:col-span-2">
+          <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+            <input
+              type="checkbox"
+              name="womenOnly"
+              defaultChecked={session.womenOnly}
+              className="h-4 w-4"
+            />
+            {t("admin.womenOnly")}
+          </label>
+          <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+            <input
+              type="checkbox"
+              name="kidsAllowed"
+              defaultChecked={session.kidsAllowed}
+              className="h-4 w-4"
+            />
+            {t("admin.kidsAllowed")}
+          </label>
+        </div>
         <div className="flex items-end">
           <button
             type="submit"
-            className="w-full rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-500 sm:w-auto"
+            className="w-full rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-500 sm:w-auto"
           >
             {t("common.save")}
           </button>

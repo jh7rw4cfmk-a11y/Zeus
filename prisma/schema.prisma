@@ -77,29 +77,33 @@ model Membership {
 }
 
 model IceSession {
-  id        String      @id @default(cuid())
-  titleEn   String
-  titleAr   String
-  type      SessionType
-  startTime DateTime
-  endTime   DateTime
-  capacity  Int
-  priceSar  Int
-  createdAt DateTime    @default(now())
+  id            String      @id @default(cuid())
+  titleEn       String
+  titleAr       String
+  type          SessionType
+  startTime     DateTime
+  endTime       DateTime
+  capacity      Int
+  priceAdultSar Int
+  priceKidSar   Int
+  womenOnly     Boolean     @default(false)
+  kidsAllowed   Boolean     @default(false)
+  createdAt     DateTime    @default(now())
 
   bookings Booking[]
 }
 
 model Booking {
-  id         String        @id @default(cuid())
-  user       User          @relation(fields: [userId], references: [id])
-  userId     String
-  session    IceSession    @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  sessionId  String
-  numTickets Int
-  totalSar   Int
-  status     BookingStatus @default(CONFIRMED)
-  createdAt  DateTime      @default(now())
+  id        String        @id @default(cuid())
+  user      User          @relation(fields: [userId], references: [id])
+  userId    String
+  session   IceSession    @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId String
+  numAdults Int           @default(1)
+  numKids   Int           @default(0)
+  totalSar  Int
+  status    BookingStatus @default(CONFIRMED)
+  createdAt DateTime      @default(now())
 
   payment Payment?
 }

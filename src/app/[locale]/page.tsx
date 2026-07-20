@@ -24,21 +24,21 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden bg-gradient-to-b from-sky-600 to-sky-800 text-white">
+      <section className="relative overflow-hidden bg-gradient-to-b from-brand-600 to-brand-800 text-white">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
-          <p className="text-sm font-semibold uppercase tracking-widest text-sky-200">
+          <p className="text-sm font-semibold uppercase tracking-widest text-brand-200">
             {t("common.tagline")}
           </p>
           <h1 className="mt-4 max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl">
             {t("home.heroTitle")}
           </h1>
-          <p className="mt-5 max-w-xl text-lg text-sky-100">
+          <p className="mt-5 max-w-xl text-lg text-brand-100">
             {t("home.heroSubtitle")}
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
               href="/schedule"
-              className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-sky-700 shadow hover:bg-sky-50"
+              className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-700 shadow hover:bg-brand-50"
             >
               {t("home.ctaBook")}
             </Link>
@@ -75,22 +75,46 @@ export default async function HomePage() {
       </section>
 
       <section className="bg-slate-50 dark:bg-slate-900">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 sm:px-6 md:grid-cols-2">
-          <div className="rounded-2xl bg-white p-8 shadow-sm dark:bg-slate-950">
-            <h3 className="font-semibold text-slate-900 dark:text-white">
-              {t("home.hoursTitle")}
-            </h3>
-            <p className="mt-2 whitespace-pre-line text-slate-600 dark:text-slate-400">
-              {t("home.hoursText")}
-            </p>
-          </div>
-          <div className="rounded-2xl bg-white p-8 shadow-sm dark:bg-slate-950">
-            <h3 className="font-semibold text-slate-900 dark:text-white">
-              {t("home.locationTitle")}
-            </h3>
-            <p className="mt-2 text-slate-600 dark:text-slate-400">
-              {t("home.locationText")}
-            </p>
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+            {t("home.visitTitle")}
+          </h2>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2">
+            <div className="rounded-2xl bg-white p-8 shadow-sm dark:bg-slate-950">
+              <h3 className="font-semibold text-slate-900 dark:text-white">
+                {t("home.hoursTitle")}
+              </h3>
+              <p className="mt-2 whitespace-pre-line text-slate-600 dark:text-slate-400">
+                {t("home.hoursText")}
+              </p>
+              <p className="mt-3 inline-flex rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700 dark:bg-brand-950 dark:text-brand-300">
+                {t("home.womenOnlyNote")}
+              </p>
+            </div>
+            <div className="rounded-2xl bg-white p-8 shadow-sm dark:bg-slate-950">
+              <h3 className="font-semibold text-slate-900 dark:text-white">
+                {t("home.locationTitle")}
+              </h3>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">
+                {t("home.locationText")}
+              </p>
+            </div>
+            <div className="rounded-2xl bg-white p-8 shadow-sm dark:bg-slate-950">
+              <h3 className="font-semibold text-slate-900 dark:text-white">
+                {t("home.pricingTitle")}
+              </h3>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">
+                {t("home.pricingText")}
+              </p>
+            </div>
+            <div className="rounded-2xl bg-white p-8 shadow-sm dark:bg-slate-950">
+              <h3 className="font-semibold text-slate-900 dark:text-white">
+                {t("home.kidsTitle")}
+              </h3>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">
+                {t("home.kidsText")}
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -101,7 +125,7 @@ export default async function HomePage() {
         </h2>
         <Link
           href="/pricing"
-          className="mt-6 inline-block rounded-full bg-sky-600 px-6 py-3 text-sm font-semibold text-white hover:bg-sky-500"
+          className="mt-6 inline-block rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-500"
         >
           {t("home.membershipCta")}
         </Link>

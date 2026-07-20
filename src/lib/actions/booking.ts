@@ -22,25 +22,36 @@ export async function createBooking(
     redirect(`/${locale}/schedule`);
   }
 
-  const booked = iceSession.bookings.reduce((sum, b) => sum + b.numTickets, 0);
-  const spotsLeft = iceSession.capacity - booked;
+  const booked = iceSession.bookings.reduce(
+    (sum, b) => sum + b.numAdults + b.numKids,
+    0
+  );
+  const spotsLeft = Math.max(iceSession.capacity - booked, 0);
 
-  const requested = Number(formData.get("tickets"));
-  const numTickets = Number.isFinite(requested)
-    ? Math.min(Math.max(1, Math.trunc(requested)), Math.max(spotsLeft, 0))
-    : 1;
+  const requestedAdults = Number(formData.get("adults"));
+  const requestedKids = Number(formData.get("kids"));
+  const numAdults = Number.isFinite(requestedAdults)
+    ? Math.max(0, Math.trunc(requestedAdults))
+    : 0;
+  const numKids =
+    iceSession.kidsAllowed && Number.isFinite(requestedKids)
+      ? Math.max(0, Math.trunc(requestedKids))
+      : 0;
+  const totalGuests = numAdults + numKids;
 
-  if (numTickets < 1 || numTickets > spotsLeft) {
+  if (totalGuests < 1 || totalGuests > spotsLeft) {
     redirect(`/${locale}/book/${sessionId}?error=full`);
   }
 
-  const totalSar = iceSession.priceSar * numTickets;
+  const totalSar =
+    numAdults * iceSession.priceAdultSar + numKids * iceSession.priceKidSar;
 
   const booking = await prisma.booking.create({
     data: {
       userId: authSession.user.id,
       sessionId,
-      numTickets,
+      numAdults,
+      numKids,
       totalSar,
       payment: {
         create: { amountSar: totalSar, status: "MOCK_PAID" },

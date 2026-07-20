@@ -8,6 +8,12 @@ export default async function ContactPage() {
     { label: t("phoneLabel"), value: t("phone"), ltr: true },
     { label: t("emailLabel"), value: t("email"), ltr: true },
     { label: t("hoursLabel"), value: t("hours") },
+    {
+      label: t("instagramLabel"),
+      value: t("instagram"),
+      ltr: true,
+      href: "https://instagram.com/Coolarena.sa",
+    },
   ];
 
   return (
@@ -32,7 +38,18 @@ export default async function ContactPage() {
               dir={r.ltr ? "ltr" : undefined}
               className="col-span-2 text-start text-slate-800 dark:text-slate-200"
             >
-              {r.value}
+              {r.href ? (
+                <a
+                  href={r.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand-600 hover:underline dark:text-brand-400"
+                >
+                  {r.value}
+                </a>
+              ) : (
+                r.value
+              )}
             </dd>
           </div>
         ))}

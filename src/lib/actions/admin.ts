@@ -22,7 +22,10 @@ function sessionDataFromForm(formData: FormData) {
     startTime: new Date(String(formData.get("startTime"))),
     endTime: new Date(String(formData.get("endTime"))),
     capacity: Math.max(1, Number(formData.get("capacity")) || 1),
-    priceSar: Math.max(0, Number(formData.get("priceSar")) || 0),
+    priceAdultSar: Math.max(0, Number(formData.get("priceAdultSar")) || 0),
+    priceKidSar: Math.max(0, Number(formData.get("priceKidSar")) || 0),
+    womenOnly: formData.get("womenOnly") === "on",
+    kidsAllowed: formData.get("kidsAllowed") === "on",
   };
 }
 
